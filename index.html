@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>Title</title>
+	<script src="http://apps.bdimg.com/libs/jquery/1.11.3/jquery.min.js"></script>
+	<script>
+			var countryId;
+			// 第一步,向高德API发送请求并获得访问者所在省份
+			$.ajax({
+				type: "get",
+				//url: "http://webapi.amap.com/maps/ipLocation?key=4a84cf8078fb847fd4072da2dbc9b6b7",//自己申请的高德key，2000次每天
+				url:'./php/index.php',
+				dataType: 'json',
+				async:false,
+				// contentType:'application/x-www-form-urlencoded;charset=UTF-8',
+				success: function(data) {
+					$('.detaill').html(JSON.stringify(data));
+					countryId =data.data.country_id;
+					if (countryId !== "CN"&&countryId !== "TW"){
+						countryId = "EN"
+					};
+					switch (countryId){
+						case 'CN':
+						$('.webType').html('中文网站');
+//					window.location.herf = 'http://www.franzsandner.com/';
+							break;
+						case 'TW':
+//							window.location.href = 'http://tw.franzsandner.com/';
+						$('.webType').html('繁体网站');
+							break;
+						case 'EN':
+//							window.location.href = 'http://en.franzsandner.com/';
+						$('.webType').html('英文网站');
+							break;
+						default:
+//							window.location.href = 'http://www.franzsandner.com/';
+
+					}
+				}
+			});
+	</script>
+</head>
+<body>
+<div class="container">
+	<h1>你将要访问：</h1>
+	<h1 class="webType"></h1>
+	<p class="detaill"></p>
+</div>
+</body>
+</html>
